@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Contentstack homepage POC
 
-## Getting Started
+A Next.js site that renders a homepage, navigation, and footer from Contentstack.
 
-First, run the development server:
+The in-site write-up is at `/contentstack` locally, and on GitHub Pages at `/ContentStack-POC/contentstack/`.
+
+## Local development
+
+Copy `.env.example` to `.env.local` and fill in the stack API key, delivery token, environment, and region. Then:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Mega menu
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The navbar renders a full-width mega menu for every published `mega_menu` entry. An entry whose title matches a header nav item label (for example `Product`) replaces that item's dropdown; other entries are appended to the nav in `order`.
 
-## Learn More
+To create the content type and sample entries, add a management token (Settings > Tokens > Management Tokens, read/write) to `.env.local` as `CONTENTSTACK_MANAGEMENT_TOKEN`, then run:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run setup:mega-menu
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The script is safe to re-run: it updates the content type and entries if they already exist, then publishes to `CONTENTSTACK_ENVIRONMENT`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## GitHub Pages
 
-## Deploy on Vercel
+Pushes to `main` build a static export and deploy it with GitHub Actions. The Contentstack credentials are repository secrets, not files in this repo:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `CONTENTSTACK_API_KEY`
+- `CONTENTSTACK_DELIVERY_TOKEN`
+- `CONTENTSTACK_ENVIRONMENT`
+- `CONTENTSTACK_REGION`

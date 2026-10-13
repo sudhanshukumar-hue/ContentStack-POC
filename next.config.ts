@@ -1,12 +1,23 @@
 import type { NextConfig } from "next";
 
+const githubPages = process.env.GITHUB_PAGES === "true";
+const basePath = githubPages ? "/ContentStack-POC" : "";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  ...(githubPages
+    ? {
+        output: "export" as const,
+        basePath,
+        trailingSlash: true,
+      }
+    : {}),
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   experimental: {
     agentFeedback: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
+  ...(!githubPages ? { cacheComponents: true, partialPrefetching: true } : {}),
   turbopack: {
     rules: {
       "*.css": {
