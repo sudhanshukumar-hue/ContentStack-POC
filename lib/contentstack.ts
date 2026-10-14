@@ -118,6 +118,36 @@ export async function getFooter() {
   return result.entries?.[0] ?? null;
 }
 
+export type PageEntry = {
+  uid?: string;
+  title?: string;
+  url?: string;
+  seo?: { meta_title?: string; meta_description?: string };
+  sections?: Record<string, unknown>[];
+};
+
+export async function getPages() {
+  try {
+    const result = await stack
+      .contentType("page")
+      .entry()
+      .includeReference(["sections.testimonials.reference"])
+      .find<PageEntry>();
+    return result.entries ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getPageByPath(path: string) {
+  const clean = `/${path.split("/").filter(Boolean).join("/")}`;
+  const pages = await getPages();
+  return (
+    pages.find((page) => page.url === clean || page.url === `${clean}/`) ??
+    null
+  );
+}
+
 export async function getHomePage() {
   const result = await stack
     .contentType("home_page")

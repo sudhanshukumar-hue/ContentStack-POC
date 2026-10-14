@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Lumio",
-  description: "A Contentstack homepage proof of concept.",
+  description: "A multi-page website composed in Contentstack.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

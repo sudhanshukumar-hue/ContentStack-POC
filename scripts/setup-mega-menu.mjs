@@ -3,6 +3,7 @@
 // Requires CONTENTSTACK_MANAGEMENT_TOKEN in .env.local (Settings > Tokens > Management Tokens, read/write).
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { sampleEntries } from "./mega-menu-entries.mjs";
 
 const envFile = resolve(process.cwd(), ".env.local");
 if (existsSync(envFile)) {
@@ -53,7 +54,6 @@ function fail(step, result) {
   process.exit(1);
 }
 
-const link = (title, href) => ({ title, href });
 const text = (uid, display_name, extra = {}) => ({
   data_type: "text", uid, display_name, field_metadata: { description: "" }, mandatory: false, multiple: false, ...extra,
 });
@@ -103,92 +103,6 @@ async function findPromoAssetUid() {
   const data = await response.json();
   const hero = data.entries?.[0]?.sections?.find((section) => section.hero)?.hero;
   return hero?.image?.image?.uid ?? hero?.image?.uid;
-}
-
-function sampleEntries(promoImage) {
-  return [
-    {
-      title: "Product",
-      order: 1,
-      link: link("Product", "/product"),
-      columns: [
-        {
-          sections: [{
-            heading: "New & trending",
-            links: [link("What's new", "/product/whats-new"), link("Timeline planning", "/product/timelines"), link("AI summaries", "/product/ai")],
-          }],
-          promo_image: promoImage,
-          promo_link: link("See what's new", "/product/whats-new"),
-          footer_link: link("All updates", "/product/whats-new"),
-        },
-        {
-          sections: [{
-            heading: "Plan",
-            links: [link("Task boards", "/product/boards"), link("Timelines", "/product/timelines"), link("Roadmaps", "/product/roadmaps"), link("Goals", "/product/goals")],
-          }],
-          footer_link: link("All planning", "/product/plan"),
-        },
-        {
-          sections: [{
-            heading: "Track",
-            links: [link("Live reporting", "/product/reporting"), link("Dashboards", "/product/dashboards"), link("Workload", "/product/workload"), link("Time tracking", "/product/time")],
-          }],
-          footer_link: link("All reporting", "/product/track"),
-        },
-        {
-          sections: [
-            { heading: "Collaborate", links: [link("Comments", "/product/comments"), link("Docs", "/product/docs"), link("Approvals", "/product/approvals")] },
-            { heading: "Platform", links: [link("Security", "/security"), link("API", "/developers")] },
-          ],
-          footer_link: link("All features", "/product/features"),
-        },
-        {
-          sections: [{
-            heading: "Integrations",
-            links: [link("Slack", "/integrations/slack"), link("GitHub", "/integrations/github"), link("Google Drive", "/integrations/google-drive"), link("Jira", "/integrations/jira"), link("Figma", "/integrations/figma")],
-          }],
-          footer_link: link("All integrations", "/integrations"),
-        },
-      ],
-    },
-    {
-      title: "Solutions",
-      order: 2,
-      link: link("Solutions", "/solutions"),
-      columns: [
-        {
-          sections: [{
-            heading: "Popular",
-            links: [link("Product launches", "/solutions/launches"), link("Sprint planning", "/solutions/sprints"), link("Client projects", "/solutions/clients")],
-          }],
-          promo_image: promoImage,
-          promo_link: link("Customer stories", "/customers"),
-          footer_link: link("All solutions", "/solutions"),
-        },
-        {
-          sections: [{
-            heading: "By team",
-            links: [link("Product", "/solutions/product"), link("Engineering", "/solutions/engineering"), link("Marketing", "/solutions/marketing"), link("Operations", "/solutions/operations")],
-          }],
-          footer_link: link("All teams", "/solutions/teams"),
-        },
-        {
-          sections: [{
-            heading: "By size",
-            links: [link("Startups", "/solutions/startups"), link("Mid-market", "/solutions/mid-market"), link("Enterprise", "/solutions/enterprise")],
-          }],
-          footer_link: link("Compare plans", "/pricing"),
-        },
-        {
-          sections: [{
-            heading: "Resources",
-            links: [link("Templates", "/templates"), link("Guides", "/guides"), link("Webinars", "/webinars")],
-          }],
-          footer_link: link("All resources", "/resources"),
-        },
-      ],
-    },
-  ];
 }
 
 async function upsertContentType() {

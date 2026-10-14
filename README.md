@@ -27,6 +27,19 @@ npm run setup:mega-menu
 
 The script is safe to re-run: it updates the content type and entries if they already exist, then publishes to `CONTENTSTACK_ENVIRONMENT`.
 
+## Pages
+
+`npm run setup:pages` creates a **Page** content type and publishes Product, Solutions, Customers, Pricing, About, Security, Resources, and Contact. It also points the header, footer, and mega menu at those URLs. Re-running it updates the same entries.
+
+To add a page later, in Contentstack:
+
+1. Entries → Page → New entry.
+2. Set the URL, for example `/partners`.
+3. Add sections (hero, feature grid, stats, and the other blocks).
+4. Publish to the environment in `.env.local`.
+
+Refresh the local site. A GitHub Pages build picks the new page up on the next deploy, because the static export reads published entries at build time.
+
 ## GitHub Pages
 
 Pushes to `main` build a static export and deploy it with GitHub Actions. The Contentstack credentials are repository secrets, not files in this repo:

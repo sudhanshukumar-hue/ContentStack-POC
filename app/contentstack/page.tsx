@@ -35,8 +35,8 @@ export default function ContentstackGuide() {
             assets.
           </li>
           <li>
-            <strong>Content type.</strong> The model. This site uses home page, header, footer, and
-            testimonials.
+            <strong>Content type.</strong> The model. This site uses home page, page, header, footer,
+            mega menu, and testimonials.
           </li>
           <li>
             <strong>Entry.</strong> The actual content, for example the homepage sections or the main
@@ -104,7 +104,19 @@ export default function ContentstackGuide() {
           <li>
             <code>cta_banner</code> becomes the closing call to action.
           </li>
+          <li>
+            <code>stats</code>, <code>split</code>, <code>steps</code>, <code>pricing</code>,{" "}
+            <code>faq</code>, <code>rich_text</code>, and <code>contact</code> are further sections
+            used on the inner pages.
+          </li>
         </ul>
+        <h2>Adding a page</h2>
+        <p>
+          Inner pages such as Product and Pricing are entries of the page content type. Each entry
+          has a URL and an ordered list of sections. The app loads every published page and renders
+          the one whose URL matches the address. A new URL needs a new entry and a publish. It does
+          not need a new template.
+        </p>
         <p>
           The header and footer are not blocks on the homepage. The root layout loads them on every
           page, including this one. Navigation links, button labels, and footer columns all come
