@@ -24,7 +24,7 @@ const registry: Record<string, React.ComponentType<any>> = {
   contact: ContactPanel,
 };
 
-export default function BlockRenderer({ blocks = [] }: { blocks: any[] }) {
+export default function BlockRenderer({ blocks = [] }: { blocks?: any[] }) {
   return (
     <>
       {blocks.map((block, i) => {
