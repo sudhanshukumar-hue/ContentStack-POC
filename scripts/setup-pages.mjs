@@ -3,7 +3,9 @@
 // Requires CONTENTSTACK_MANAGEMENT_TOKEN in .env.local (Settings > Tokens > Management Tokens, read/write).
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { logoFields, uploadClientLogos } from "./client-logos.mjs";
 import { sampleEntries } from "./mega-menu-entries.mjs";
+import { ensureTestimonials } from "./testimonials.mjs";
 
 const envFile = resolve(process.cwd(), ".env.local");
 if (existsSync(envFile)) {
@@ -136,6 +138,19 @@ const contentType = {
           ],
         },
         {
+          title: "Clients",
+          uid: "clients",
+          schema: [
+            text("heading", "Heading"),
+            group("logos", "Logos", [
+              file("logo", "Logo"),
+              text("name", "Name"),
+              text("industry", "Industry"),
+              text("description", "Description", { field_metadata: { description: "", multiline: true } }),
+            ], true),
+          ],
+        },
+        {
           title: "Feature grid",
           uid: "feature_grid",
           schema: [
@@ -246,7 +261,7 @@ function feature(title, description, icon, href) {
   return { title, description, icon, ...(href ? { link: { title, href } } : {}) };
 }
 
-function samplePages(imageUid, quotes) {
+function samplePages(imageUid, quotes, logoUids) {
   const picture = imageUid ? { image: imageUid, alt: "Lumio workspace" } : undefined;
   const quotesBlock = quotes.length
     ? [{ testimonials: { heading: "Teams who plan in the open", reference: quotes } }]
@@ -262,6 +277,7 @@ function samplePages(imageUid, quotes) {
       },
       sections: [
         { hero: { eyebrow: "Product", heading: "Plan the work. Show the progress.", subheading: "Lumio keeps boards, timelines, goals, and reporting in one workspace, so a launch plan does not live in five tools.", theme: "light", image: picture, cta: button("See pricing", "/pricing") } },
+        { clients: { heading: "Our clients", logos: logoFields(logoUids) } },
         { stats: { items: [
           { value: "12k", label: "teams planning in Lumio" },
           { value: "40%", label: "faster launch cycles" },
@@ -364,7 +380,7 @@ function samplePages(imageUid, quotes) {
         { rich_text: { heading: "What you are looking at", body: "Each of these pages is a Page entry. A page has a URL and a stack of sections: hero, features, stats, pricing, questions, and a closing banner.\n\nAdding a page does not require a new template. Create an entry, set a URL such as /partners, add the sections, and publish it to staging. The site reads that URL and renders the blocks.\n\nThe homepage, header, footer, and mega menu are separate content types, so global chrome can change without editing every page." } },
         { stats: { items: [
           { value: "8", label: "sample pages in this stack" },
-          { value: "11", label: "section types an editor can stack" },
+          { value: "12", label: "section types an editor can stack" },
           { value: "1", label: "template for every new URL" },
           { value: "EU", label: "Contentstack region for this stack" },
         ] } },
@@ -621,14 +637,11 @@ async function patchSingleton(contentTypeUid, mutate) {
 
 await upsertContentType();
 
-const quotesResult = await cma("GET", `/content_types/testimonials/entries?locale=${locale}`);
-const quotes = (quotesResult.data.entries ?? []).slice(0, 3).map((entry) => ({
-  uid: entry.uid,
-  _content_type_uid: "testimonials",
-}));
+const quotes = await ensureTestimonials({ apiHost, apiKey, managementToken, environment, locale, cma });
 
 const imageUid = await findPromoAssetUid();
-for (const entry of samplePages(imageUid, quotes)) {
+const logoUids = await uploadClientLogos({ apiHost, apiKey, managementToken, environment, locale, cma });
+for (const entry of samplePages(imageUid, quotes, logoUids)) {
   await upsertByQuery("page", entry, { url: entry.url });
 }
 

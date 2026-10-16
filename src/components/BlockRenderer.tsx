@@ -1,3 +1,4 @@
+import ClientLogos from "./ClientLogos";
 import ContactPanel from "./ContactPanel";
 import CtaBanner from "./CtaBanner";
 import Faq from "./Faq";
@@ -12,6 +13,7 @@ import Testimonials from "./Testimonials";
 
 const registry: Record<string, React.ComponentType<any>> = {
   hero: Hero,
+  clients: ClientLogos,
   feature_grid: FeatureGrid,
   testimonials: Testimonials,
   cta_banner: CtaBanner,

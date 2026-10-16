@@ -82,6 +82,13 @@ export type FooterEntry = {
   theme?: string;
 };
 
+export type MegaSlide = {
+  image?: { url?: string } | null;
+  title?: string;
+  description?: string;
+  link?: ContentstackLink;
+};
+
 export type MegaMenuEntry = {
   uid?: string;
   title?: string;
@@ -96,6 +103,7 @@ export type MegaMenuEntry = {
     promo_link?: ContentstackLink;
     footer_link?: ContentstackLink;
   }[];
+  slides?: MegaSlide[];
 };
 
 export async function getMegaMenus() {

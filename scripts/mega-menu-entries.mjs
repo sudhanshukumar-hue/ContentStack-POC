@@ -1,5 +1,14 @@
 const link = (title, href) => ({ title, href });
 
+function slide(title, description, href, image) {
+  return {
+    title,
+    description,
+    link: link(title, href),
+    ...(image ? { image } : {}),
+  };
+}
+
 export function sampleEntries(promoImage) {
   return [
     {
@@ -51,6 +60,11 @@ export function sampleEntries(promoImage) {
           ],
           footer_link: link("Talk to us", "/contact"),
         },
+      ],
+      slides: [
+        slide("Timeline planning", "Map dependencies and see which date slips before the week does.", "/product#timelines", promoImage),
+        slide("Live reporting", "Status comes from the work, not from a Friday spreadsheet.", "/product#live-reporting", promoImage),
+        slide("AI summaries", "The decision, the owner, and the date, pulled out of the thread.", "/product#ai-summaries", promoImage),
       ],
     },
     {
@@ -105,6 +119,11 @@ export function sampleEntries(promoImage) {
           }],
           footer_link: link("All resources", "/resources"),
         },
+      ],
+      slides: [
+        slide("Product teams", "Keep the roadmap, the bets, and the launch checklist on one page.", "/solutions#product", promoImage),
+        slide("Customer stories", "How sample teams dropped the Friday status deck.", "/customers", promoImage),
+        slide("Enterprise", "A plan leadership can open without a briefing.", "/solutions#enterprise", promoImage),
       ],
     },
   ];

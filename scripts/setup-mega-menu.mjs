@@ -92,6 +92,20 @@ const contentType = {
         linkField("footer_link", "Footer Link"),
       ],
     },
+    {
+      data_type: "group",
+      uid: "slides",
+      display_name: "Slides",
+      field_metadata: { description: "Featured cards that rotate under the columns.", instruction: "Add two or more slides. The menu shows one at a time." },
+      multiple: true,
+      mandatory: false,
+      schema: [
+        { data_type: "file", uid: "image", display_name: "Image", field_metadata: { description: "" }, mandatory: false, multiple: false },
+        text("title", "Title"),
+        text("description", "Description", { field_metadata: { description: "", multiline: true } }),
+        linkField("link", "Link"),
+      ],
+    },
   ],
 };
 

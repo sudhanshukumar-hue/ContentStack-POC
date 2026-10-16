@@ -7,6 +7,7 @@ import {
   type MegaMenuEntry,
 } from "@/lib/contentstack";
 import { withBase } from "@/lib/paths";
+import MegaSlider from "./MegaSlider";
 
 type NavItem = NonNullable<HeaderEntry["nav_items"]>[number];
 
@@ -173,6 +174,7 @@ function MegaItem({ menu, item }: { menu: MegaMenuEntry; item?: NavItem }) {
               </div>
             ))}
           </div>
+          {!!menu.slides?.length && <MegaSlider slides={menu.slides} label={label ?? "Menu"} />}
           {hasFooter && (
             <div className="mega__grid mega__footer" style={gridStyle}>
               {columns.map((column, index) =>

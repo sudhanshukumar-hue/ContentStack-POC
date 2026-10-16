@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "setup:mega-menu": "node scripts/setup-mega-menu.mjs",
-    "setup:pages": "node scripts/setup-pages.mjs"
+    "setup:pages": "node scripts/setup-pages.mjs",
+    "setup:testimonials": "node scripts/ensure-testimonials.mjs"
   },
   "dependencies": {
     "@contentstack/delivery-sdk": "^5.6.1",

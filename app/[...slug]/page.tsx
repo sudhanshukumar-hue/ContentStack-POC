@@ -11,6 +11,30 @@ function toPath(slug: string[]) {
   return `/${slug.filter(Boolean).join("/")}`;
 }
 
+const sampleClients = {
+  clients: {
+    heading: "Our clients",
+    logos: [
+      { name: "Northwind" },
+      { name: "Helio" },
+      { name: "Brightline" },
+      { name: "Kite & Co" },
+      { name: "Marlowe" },
+      { name: "Fieldnote" },
+      { name: "Copperlane" },
+      { name: "Lumenary" },
+    ],
+  },
+};
+
+function withClientStrip(path: string, blocks?: Record<string, unknown>[]) {
+  const sections = blocks ?? [];
+  if (path !== "/product" || sections.some((block) => "clients" in block)) return sections;
+  const heroAt = sections.findIndex((block) => "hero" in block);
+  const at = heroAt === -1 ? 0 : heroAt + 1;
+  return [...sections.slice(0, at), sampleClients, ...sections.slice(at)];
+}
+
 export async function generateStaticParams() {
   const pages = await getPages();
   const params = pages
@@ -46,7 +70,7 @@ async function PageContent({ params }: PageParams) {
           <span>{page.title}</span>
         </div>
       </nav>
-      <BlockRenderer blocks={page.sections} />
+      <BlockRenderer blocks={withClientStrip(toPath(slug), page.sections)} />
     </>
   );
 }
